@@ -2,7 +2,8 @@ name: Docker Build
 
 on:
   push:
-    tags: ['*']
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
 
 env:
   REGISTRY: ghcr.io
