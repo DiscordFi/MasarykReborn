@@ -5,17 +5,20 @@ import os
 
 from discord.ext import commands
 
-def test_dotenv() -> None:
-    if type(os.getenv("DISCORD_TOKEN")) != str:
-        raise Exception("DISCORD_TOKEN is not set.")
-    if type(os.getenv("PREFIX")) != str:
-        raise Exception("PREFIX is not set.")
+# define constants
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+if type(DISCORD_TOKEN) != str:
+    raise Exception("DISCORD_TOKEN is not set.")
 
-test_dotenv()
+COMMAND_PREFIX = os.getenv("COMMAND_PREFIX")
+if type(COMMAND_PREFIX) != str:
+    raise Exception("COMMAND_PREFIX is not set.")
+elif len(COMMAND_PREFIX) == 0:
+    raise Exception("COMMAND_PREFIX is not meant to be empty.")
 
 class Bot(commands.Bot):
     def __init__(self) -> None:
-        super().__init__(command_prefix=os.getenv("PREFIX"), intents=discord.Intents.all())
+        super().__init__(command_prefix=COMMAND_PREFIX, intents=discord.Intents.all())
         self.bot_handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
         self.bot_formatter = logging.Formatter("%(asctime)s: %(levelname)s: %(message)s")
 
@@ -26,6 +29,7 @@ class Bot(commands.Bot):
         await bot.application_info()
 
     async def on_ready(self) -> None:
+        assert self.user is not None
         # this will sync all commands on ready but is not recommended on production
         #synced = await self.tree.sync()
         ready_string = f"Logged in as {self.user.mention} | {self.user.id}\n"
@@ -38,4 +42,4 @@ class Bot(commands.Bot):
 
 bot: Bot = Bot()
 
-bot.run(os.getenv("DISCORD_TOKEN"))
+bot.run(DISCORD_TOKEN)
