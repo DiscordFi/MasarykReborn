@@ -7,4 +7,5 @@ RUN pip install -r bot/requirements.txt
 
 COPY bot bot
 
-CMD [ "python", "bot/main.py" ]
+# -u for unbuffered stderr and stdout
+CMD [ "python", "-u", "bot/main.py" ]
