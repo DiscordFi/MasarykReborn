@@ -1,0 +1,11 @@
+services:
+  bot:
+    container_name: masaryk-bot
+    image: masaryk-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .bot.env
+    restart: unless-stopped
+    
