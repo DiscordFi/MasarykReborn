@@ -8,4 +8,3 @@ services:
     env_file:
       - .bot.env
     restart: unless-stopped
-    
